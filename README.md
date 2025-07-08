@@ -24,3 +24,8 @@ Important: There seems to be a problem with path management under Windows, so I 
 Puedes revisar el informe completo de análisis estático aquí:  
 👉 [Ver análisis_estatico.md](./analisis_estatico.md)
 
+## Cómo ejecutar el contenedor
+
+```bash
+docker build -t codebending-app .
+docker run -p 3000:3000 codebending-app
