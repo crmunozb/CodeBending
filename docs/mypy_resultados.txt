@@ -1,8 +1,0 @@
-funciones_archivo/manejoMaven.py:2: error: Cannot find implementation or library stub for module named "ansi2html"  [import-not-found]
-funciones_archivo/manejoMaven.py:2: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#missing-imports
-main.py:9: error: Cannot find implementation or library stub for module named "werkzeug.utils"  [import-not-found]
-main.py:14: error: Cannot find implementation or library stub for module named "werkzeug.security"  [import-not-found]
-basedatos/modelos.py: error: Source file found twice under different module names: "modelos" and "basedatos.modelos"
-basedatos/modelos.py: note: See https://mypy.readthedocs.io/en/stable/running_mypy.html#mapping-file-paths-to-modules for more info
-basedatos/modelos.py: note: Common resolutions include: a) adding `__init__.py` somewhere, b) using `--explicit-package-bases` or adjusting MYPYPATH
-Found 4 errors in 3 files (errors prevented further checking)
