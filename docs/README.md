@@ -88,4 +88,4 @@ Flake8 encontró múltiples errores de estilo en los archivos del proyecto.
 
 ---
 
-📌 *Última revisión: Julio 2025.*
+📌 *Última revisión: 8 de Julio 2025.*
