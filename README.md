@@ -1,3 +1,4 @@
+
 # CodeBending
 
 You need Java JRE > 21 installed and Apache Maven in your computer.
@@ -19,13 +20,13 @@ Important: There seems to be a problem with path management under Windows, so I 
 
 ---
 
-📊 **Análisis Estático del Código**
+## 📊 Análisis Estático del Código
 
-Se realizó un análisis del código fuente utilizando herramientas de seguridad y calidad de código:
+Se aplicaron tres herramientas para evaluar la calidad y seguridad del código fuente:
 
-- 🔐 **Bandit**: análisis de vulnerabilidades comunes en scripts Python.
-- 📏 **Flake8**: verificación de estilo y errores comunes de sintaxis.
-- 🧠 **Radon**: cálculo de la complejidad ciclomática de las funciones.
+- 🔐 **Bandit**: detectó posibles vulnerabilidades en funciones de manipulación de archivos y uso de rutas.
+- 📏 **Flake8**: permitió identificar errores de estilo, como violaciones a PEP8, líneas demasiado largas y espacios innecesarios.
+- 🧠 **Radon**: analizó la complejidad ciclomática, permitiendo detectar funciones con lógica excesivamente compleja.
 
 Los reportes generados se encuentran en la carpeta [`docs/`](./docs/):
 
@@ -33,8 +34,16 @@ Los reportes generados se encuentran en la carpeta [`docs/`](./docs/):
 - [`flake8_resultados.txt`](./docs/flake8_resultados.txt)
 - [`radon_resultados.txt`](./docs/radon_resultados.txt)
 
-Para más detalles, consulta el resumen explicativo en  
+Para una explicación más detallada de los hallazgos, puede consultar el siguiente documento:  
 👉 [`docs/README.md`](./docs/README.md)
+
+---
+
+## 💬 Retrospectiva
+
+El uso de herramientas de análisis estático fue fundamental para mejorar la calidad del proyecto. Gracias a Bandit, se identificaron prácticas potencialmente inseguras que fueron corregidas a tiempo. Con Flake8 se mejoró la legibilidad y uniformidad del código, lo cual facilita el mantenimiento futuro. Por último, Radon ayudó a detectar funciones que requerían ser simplificadas para cumplir con buenas prácticas de diseño.
+
+Consideramos que estas herramientas son valiosas no solo para este proyecto, sino también para otros proyectos Python de tipo educativo o profesional.
 
 ---
 
@@ -43,3 +52,12 @@ Para más detalles, consulta el resumen explicativo en
 ```bash
 docker build -t codebending-app .
 docker run -p 3000:3000 codebending-app
+
+---
+
+## 👤 Autor
+
+**Cristóbal Muñoz Barrios**  
+Estudiante de Ingeniería Civil Informática  
+Universidad de Concepción – Julio 2025  
+Proyecto para el curso **Fundamentos de Testing y Aseguramiento de la Calidad**
