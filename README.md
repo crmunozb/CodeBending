@@ -21,10 +21,24 @@ Important: There seems to be a problem with path management under Windows, so I 
 
 📊 **Análisis Estático del Código**
 
-Puedes revisar el informe completo de análisis estático aquí:  
-👉 [Ver análisis_estatico.md](./analisis_estatico.md)
+Se realizó un análisis del código fuente utilizando herramientas de seguridad y calidad de código:
 
-## Cómo ejecutar el contenedor
+- 🔐 **Bandit**: análisis de vulnerabilidades comunes en scripts Python.
+- 📏 **Flake8**: verificación de estilo y errores comunes de sintaxis.
+- 🧠 **Radon**: cálculo de la complejidad ciclomática de las funciones.
+
+Los reportes generados se encuentran en la carpeta [`docs/`](./docs/):
+
+- [`bandit_resultados.txt`](./docs/bandit_resultados.txt)
+- [`flake8_resultados.txt`](./docs/flake8_resultados.txt)
+- [`radon_resultados.txt`](./docs/radon_resultados.txt)
+
+Para más detalles, consulta el resumen explicativo en  
+👉 [`docs/README.md`](./docs/README.md)
+
+---
+
+## 🐳 Cómo ejecutar el contenedor
 
 ```bash
 docker build -t codebending-app .
