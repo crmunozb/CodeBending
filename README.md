@@ -53,8 +53,8 @@ Consideramos que estas herramientas son valiosas no solo para este proyecto, sin
 docker build -t codebending-app .
 docker run -p 3000:3000 codebending-app
 
----
 
+---
 ## 👤 Autor
 
 **Cristóbal Muñoz Barrios**  
