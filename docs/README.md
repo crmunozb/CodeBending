@@ -89,3 +89,10 @@ Flake8 encontró múltiples errores de estilo en los archivos del proyecto.
 ---
 
 📌 *Última revisión: 8 de Julio 2025.*
+
+👤 Autor
+
+**Cristóbal Muñoz Barrios**  
+Estudiante de Ingeniería Civil Informática - Universidad de Concepción  
+GitHub: [@crmunozb](https://github.com/crmunozb)  
+Última revisión: 8 de Julio de 2025
