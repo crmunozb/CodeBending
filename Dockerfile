@@ -10,6 +10,10 @@ COPY . .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Crear usuario no-root y cambiar propietario de la carpeta
+RUN adduser --disabled-password --gecos '' appuser && chown -R appuser /app
+USER appuser
+
 ENV FLASK_APP=main.py
 ENV FLASK_RUN_PORT=3000
 
