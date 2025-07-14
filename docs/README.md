@@ -3,28 +3,31 @@
 ## 1. Introducción
 Este informe documenta el análisis estático realizado al proyecto CodeBending, una plataforma desarrollada en Python para la gestión y seguimiento de ejercicios de programación paso a paso. El objetivo fue evaluar la calidad, seguridad y mantenibilidad del código, utilizando tres herramientas especializadas:
 
-Bandit: Detección de vulnerabilidades de seguridad.
+- **Bandit**: Detección de vulnerabilidades de seguridad.
 
-Radon: Evaluación de la complejidad ciclomática del código.
+- **Radon**: Evaluación de la complejidad ciclomática del código.
 
-Pylint: Análisis de calidad, estilo y convenciones de buenas prácticas Python.
+- **Pylint**: Análisis de calidad, estilo y convenciones de buenas prácticas Python.
 
 ## 2. Resultados del Análisis con Bandit
-Resumen:
-Líneas analizadas: 1346
 
-Archivos analizados: 1
+**Resumen**:
 
-Vulnerabilidades detectadas: 5
+**Líneas analizadas**: 1346
 
-Alta: 1
+**Archivos analizados**: 1
 
-Media: 3
+**Vulnerabilidades detectadas**: 5
 
-Baja: 1
+**Alta**: 1
 
-Hallazgos clave:
-Uso de subprocess sin validación segura
+**Media**: 3
+
+**Baja**: 1
+
+**Hallazgos clave**:
+
+- **Uso de subprocess sin validación segura**
 
 Archivo: manejoMaven.py, líneas 1 y 7
 
@@ -34,7 +37,7 @@ Justificación: Aunque el comando ['mvn', 'clean', 'test'] es fijo, debe protege
 
 Recomendación: Validar entradas, mantener shell=False, y usar shlex.split().
 
-Clave secreta hardcodeada
+- **Clave secreta hardcodeada**
 
 Archivo: main.py, línea 59
 
@@ -42,7 +45,7 @@ Riesgo: Medio
 
 Recomendación: Extraer a .env o usar os.getenv.
 
-debug=True en entorno Flask
+- **debug=True en entorno Flask**
 
 Archivo: main.py, línea 1397
 
@@ -50,7 +53,7 @@ Riesgo: Alto
 
 Recomendación: Controlar por variable de entorno y eliminar en producción.
 
-host='0.0.0.0' expuesto
+- **host='0.0.0.0' expuesto**
 
 Archivo: main.py, línea 1396
 
