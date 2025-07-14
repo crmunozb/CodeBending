@@ -71,24 +71,39 @@ Este análisis me ayudó a entender que incluso decisiones menores, como habilit
 
 ---
 
-## 📈 3. Resultados del Análisis de Complejidad (Radon)
+## 🧾 3. Resultados del Análisis de Complejidad (Radon)
 
 Radon evalúa la **complejidad ciclomática** de funciones, asignando notas de **A** (muy simple) a **F** (muy compleja).
 
 ### 📌 Principales Funciones Críticas
 
-| Función                      | Ubicación       | Complejidad | Nota | Observaciones                                   |
-|-----------------------------|------------------|-------------|------|-------------------------------------------------|
+| Función                        | Ubicación     | Complejidad | Nota | Observaciones                                 |
+|-------------------------------|---------------|-------------|------|-----------------------------------------------|
 | `detallesEjerciciosEstudiantes` | `main.py:1199` | 35          | E    | Alta ramificación, múltiples responsabilidades |
-| `detallesCurso`             | `main.py:701`    | 26          | D    | Muchas condiciones anidadas                    |
-| `detallesEjercicio`         | `main.py:561`    | 18          | C    | Mezcla lógica de presentación y negocio        |
-| `progresoCurso`             | `main.py:1035`   | 18          | C    | Condicionales repetitivos                      |
-| `dashDocente`               | `main.py:297`    | 15          | C    | Filtros condicionales en la vista              |
-| *(Otras funciones)*         | `varias`         | 11–15       | C    | Condiciones múltiples y lógica acoplada        |
+| `detallesCurso`               | `main.py:701`  | 26          | D    | Muchas condiciones anidadas                   |
+| `detallesEjercicio`           | `main.py:561`  | 18          | C    | Mezcla lógica de presentación y negocio       |
+| `progresoCurso`               | `main.py:1035` | 18          | C    | Condicionales repetitivos                     |
+| `dashDocente`                 | `main.py:297`  | 15          | C    | Filtros condicionales en la vista             |
+| *(Otras funciones)*           | `varias`       | 11–15       | C    | Condiciones múltiples y lógica acoplada       |
+
+✅ **Recomendación**: Refactorizar funciones complejas aplicando principios **SOLID**, modularización y separación de responsabilidades.
 
 ---
 
-✅ **Recomendación**: Refactorizar funciones complejas aplicando principios **SOLID**, modularización y separación de responsabilidades.
+### 🧩 Análisis Personal
+
+Al revisar las funciones con mayor complejidad, me llamó especialmente la atención `detallesEjerciciosEstudiantes`, con una complejidad de 35 (nota E). Al leerla, noté que mezcla múltiples responsabilidades: accede a la base de datos, filtra resultados, prepara estructuras para renderizar la vista, y maneja errores, todo en una misma función. Esto hace que entender su flujo lógico sea difícil y propenso a errores.
+
+Algo similar ocurre con `detallesCurso` y `progresoCurso`, donde hay múltiples condicionales anidados y repetidos. Estas funciones son difíciles de testear, y cualquier cambio pequeño puede afectar múltiples partes. Esto confirma lo que aprendí teóricamente: alta complejidad = bajo mantenimiento.
+
+Lo más preocupante fue notar que muchas funciones mezclan la lógica de presentación con la lógica de negocio (por ejemplo, HTML embebido con estructuras de control), lo que rompe con los principios de separación de capas.
+
+🛠️ Como solución, propongo:
+- Extraer funciones auxiliares pequeñas con responsabilidad única.
+- Aplicar el principio **SRP** (Single Responsibility Principle).
+- Mover la lógica de negocio fuera de las vistas hacia controladores/modulos aparte.
+
+Este análisis me ayudó a comprender por qué la complejidad no es solo un número, sino un reflejo de cuán mantenible y comprensible es el código.
 
 ## 4. Resultados del Análisis de Calidad (Pylint)
 Puntuación general: 6.43 / 10
