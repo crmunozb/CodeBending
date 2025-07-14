@@ -49,9 +49,9 @@ El objetivo fue evaluar la **calidad**, **seguridad** y **mantenibilidad** del c
 
 ---
 
-#### 🔴 **3. `debug=True` en entorno Flask**
+#### 🟡 **3. `debug=True` en entorno Flask**
 - **Archivo**: `main.py`, línea 1397  
-- **Riesgo**: Alto  
+- **Riesgo**: Medio  
 - **Justificación**: El modo debug expone trazas completas de error, lo que podría mostrar información sensible en producción (como rutas internas o variables).  
 - **Recomendación**: Desactivar el debug en producción, controlarlo con una variable de entorno (`DEBUG=False`).
 
@@ -62,6 +62,18 @@ El objetivo fue evaluar la **calidad**, **seguridad** y **mantenibilidad** del c
 - **Riesgo**: Medio  
 - **Justificación**: Esta configuración hace que el servidor esté accesible desde cualquier IP. Útil en desarrollo remoto, pero riesgoso en entornos abiertos.  
 - **Recomendación**: Restringir a `localhost` o proteger con reglas de firewall si se expone públicamente.
+
+#### 🟢 **5. Variables no utilizadas**
+
+- **Archivo**: main.py
+
+- **Riesgo**: Bajo
+
+- **Justificación**: Variables definidas que nunca se usan, lo que ensucia el código y complica su mantenimiento.
+
+- **Recomendación**: Eliminar código muerto para mantener claridad y mantenibilidad.
+
+
 
 ---
 
