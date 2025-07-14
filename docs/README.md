@@ -39,6 +39,8 @@ El objetivo fue evaluar la **calidad**, **seguridad** y **mantenibilidad** del c
 - **Recomendación**: Validar cualquier entrada futura, mantener `shell=False`, y usar `shlex.split()` si se transforma a string.  
 - **Reflexión como desarrollador**: Me di cuenta de que incluso cuando el comando es controlado, el simple hecho de usar `subprocess` exige una mentalidad de seguridad preventiva. Es un recordatorio de que **la seguridad debe aplicarse también a los scripts auxiliares**, no solo a las interfaces principales.
 
+En el caso específico del uso de subprocess.run(['mvn', 'clean', 'test']), este comando permite ejecutar pruebas con Maven desde un script Python. En el contexto del proyecto, se utiliza para verificar automáticamente el funcionamiento de ejercicios antes de ser cargados a la plataforma. Si bien no recibe entrada externa en esta versión, al estar ubicado en un script que podría ser modificado o reutilizado, se vuelve relevante pensar en su validación y sanitización para evitar ejecución arbitraria en escenarios futuros.
+
 ---
 
 #### 🟡 **2. Clave secreta incrustada en el código fuente**
