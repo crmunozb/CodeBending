@@ -1,79 +1,80 @@
 ## 📄 Análisis Estático del Proyecto CodeBending
 
-## 1. Introducción
-Este informe documenta el análisis estático realizado al proyecto CodeBending, una plataforma desarrollada en Python para la gestión y seguimiento de ejercicios de programación paso a paso. El objetivo fue evaluar la calidad, seguridad y mantenibilidad del código, utilizando tres herramientas especializadas:
+## 📌 1. Introducción
 
-- **Bandit**: Detección de vulnerabilidades de seguridad.
+Este informe documenta el análisis estático realizado al proyecto **CodeBending**, una plataforma desarrollada en Python para la gestión y seguimiento de ejercicios de programación paso a paso.  
+El objetivo fue evaluar la **calidad**, **seguridad** y **mantenibilidad** del código, utilizando tres herramientas especializadas:
 
-- **Radon**: Evaluación de la complejidad ciclomática del código.
+- 🔐 **Bandit**: Detección de vulnerabilidades de seguridad.
+- 📊 **Radon**: Evaluación de la complejidad ciclomática del código.
+- 🧹 **Pylint**: Análisis de calidad, estilo y convenciones de buenas prácticas Python.
 
-- **Pylint**: Análisis de calidad, estilo y convenciones de buenas prácticas Python.
+---
 
-## 2. Resultados del Análisis con Bandit
+## 🛡️ 2. Resultados del Análisis de Seguridad (Bandit)
 
-**Resumen**:
+### 📌 Resumen General:
 
-**Líneas analizadas**: 1346
+| Métrica                  | Valor |
+|--------------------------|-------|
+| **Líneas analizadas**    | 1346  |
+| **Archivos analizados**  | 1     |
+| **Vulnerabilidades**     | 5     |
+| 🔴 **Alta**              | 1     |
+| 🟡 **Media**             | 3     |
+| 🟢 **Baja**              | 1     |
 
-**Archivos analizados**: 1
+---
 
-**Vulnerabilidades detectadas**: 5
+### 🔍 Hallazgos Clave:
 
-**Alta**: 1
+#### 🔴 Uso de `subprocess` sin validación segura  
+- **Archivo**: `manejoMaven.py`, líneas 1 y 7  
+- **Riesgo**: Alto  
+- **Justificación**: Aunque se usa un comando fijo (`['mvn', 'clean', 'test']`), debe protegerse de entradas externas.  
+- **Recomendación**: Validar entradas, mantener `shell=False` y usar `shlex.split()`.
 
-**Media**: 3
+---
 
-**Baja**: 1
+#### 🟡 Clave secreta hardcodeada  
+- **Archivo**: `main.py`, línea 59  
+- **Riesgo**: Medio  
+- **Recomendación**: Extraer la clave a un archivo `.env` y acceder mediante `os.getenv`.
 
-**Hallazgos clave**:
+---
 
-- **Uso de subprocess sin validación segura**
+#### 🔴 `debug=True` en entorno Flask  
+- **Archivo**: `main.py`, línea 1397  
+- **Riesgo**: Alto  
+- **Recomendación**: Controlar mediante una variable de entorno. Eliminar en producción.
 
-Archivo: manejoMaven.py, líneas 1 y 7
+---
 
-Riesgo: Alto
+#### 🟡 `host='0.0.0.0'` expuesto  
+- **Archivo**: `main.py`, línea 1396  
+- **Riesgo**: Medio  
+- **Recomendación**: Restringir a `localhost` o proteger con firewall.
 
-Justificación: Aunque el comando ['mvn', 'clean', 'test'] es fijo, debe protegerse de entradas externas.
+---
 
-Recomendación: Validar entradas, mantener shell=False, y usar shlex.split().
+## 📈 3. Resultados del Análisis de Complejidad (Radon)
 
-- **Clave secreta hardcodeada**
+Radon evalúa la **complejidad ciclomática** de funciones, asignando notas de **A** (muy simple) a **F** (muy compleja).
 
-Archivo: main.py, línea 59
+### 📌 Principales Funciones Críticas
 
-Riesgo: Medio
+| Función                      | Ubicación       | Complejidad | Nota | Observaciones                                   |
+|-----------------------------|------------------|-------------|------|-------------------------------------------------|
+| `detallesEjerciciosEstudiantes` | `main.py:1199` | 35          | E    | Alta ramificación, múltiples responsabilidades |
+| `detallesCurso`             | `main.py:701`    | 26          | D    | Muchas condiciones anidadas                    |
+| `detallesEjercicio`         | `main.py:561`    | 18          | C    | Mezcla lógica de presentación y negocio        |
+| `progresoCurso`             | `main.py:1035`   | 18          | C    | Condicionales repetitivos                      |
+| `dashDocente`               | `main.py:297`    | 15          | C    | Filtros condicionales en la vista              |
+| *(Otras funciones)*         | `varias`         | 11–15       | C    | Condiciones múltiples y lógica acoplada        |
 
-Recomendación: Extraer a .env o usar os.getenv.
+---
 
-- **debug=True en entorno Flask**
-
-Archivo: main.py, línea 1397
-
-Riesgo: Alto
-
-Recomendación: Controlar por variable de entorno y eliminar en producción.
-
-- **host='0.0.0.0' expuesto**
-
-Archivo: main.py, línea 1396
-
-Riesgo: Medio
-
-Recomendación: Restringir a localhost o usar firewall en producción.
-
-## 3. Resultados del Análisis de Complejidad (Radon)
-Radon analiza la complejidad ciclomática de funciones, asignando notas de A (simple) a F (muy compleja).
-
-Principales funciones críticas:
-Función	Ubicación	Complejidad	Nota	Observaciones
-detallesEjerciciosEstudiantes	main.py:1199	35	E	Alta ramificación y múltiples responsabilidades.
-detallesCurso	main.py:701	26	D	Muchas condiciones anidadas.
-detallesEjercicio	main.py:561	18	C	Mezcla lógica de presentación y negocio.
-progresoCurso	main.py:1035	18	C	Condicionales repetitivos.
-dashDocente	main.py:297	15	C	Filtros condicionales en la vista.
-Otras funciones	varias	11–15	C	Condiciones múltiples y lógica acoplada.
-
-✅ Recomendación: Refactorizar funciones grandes y aplicar principios SOLID.
+✅ **Recomendación**: Refactorizar funciones complejas aplicando principios **SOLID**, modularización y separación de responsabilidades.
 
 ## 4. Resultados del Análisis de Calidad (Pylint)
 Puntuación general: 6.43 / 10
