@@ -44,16 +44,17 @@ El objetivo fue evaluar la **calidad**, **seguridad** y **mantenibilidad** del c
 #### 🟡 **2. Clave secreta incrustada en el código fuente**
 - **Archivo**: `main.py`, línea 59  
 - **Riesgo**: Medio  
-- **Contexto**: Se detectó una clave de API o token directamente en el código. Aunque era una prueba, esto es una mala práctica incluso en entornos locales.  
-- **Recomendación**: Mover la clave a un archivo `.env` e importar con `os.getenv()`. En producción, esto permite rotar credenciales sin alterar el código fuente.
-
+- **Contexto**:Se detectó una clave de API o token directamente en el código. Aunque se trataba de una prueba, esto representa una mala práctica incluso en entornos de desarrollo   
+- **Recomendación**: Mover la clave a un archivo .env e importarla mediante os.getenv(). En entornos productivos, esto facilita la rotación de credenciales sin modificar el código fuente y permite aplicar buenas prácticas de seguridad.
 ---
 
 #### 🟡 **3. Entorno de desarrollo con Flask**
 - **Archivo**: `main.py`, línea 1397  
 - **Riesgo**: Medio  
-- **Justificación**: El modo debug expone trazas completas de error, lo que podría mostrar información sensible en producción (como rutas internas o variables).  
-- **Recomendación**: Desactivar el debug en producción, controlarlo con una variable de entorno (`DEBUG=False`).
+- **Justificación**: Ejecutar Flask con debug=True habilita la traza completa de errores, lo que podría revelar rutas internas, estructuras del código o variables sensibles en caso de fallo.
+- **Recomendación**: Desactivar el modo debug en producción y gestionarlo mediante una variable de entorno (DEBUG=False), respetando el principio de configuración externa.
+
+
 
 ---
 
