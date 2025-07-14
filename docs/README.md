@@ -64,6 +64,7 @@ El objetivo fue evaluar la **calidad**, **seguridad** y **mantenibilidad** del c
 - **Justificación**: Esta configuración hace que el servidor esté accesible desde cualquier IP. Útil en desarrollo remoto, pero riesgoso en entornos abiertos.  
 - **Recomendación**: Restringir a `localhost` o proteger con reglas de firewall si se expone públicamente.
 
+---
 #### 🟢 **5. Variables no utilizadas**
 
 - **Archivo**: main.py
