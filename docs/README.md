@@ -111,13 +111,15 @@ El proyecto CodeBending presenta una base sólida, pero también áreas crítica
 
 ## 6. Retrospectiva del Desarrollador
 
-- Como desarrollador, este análisis me permitió tener una visión más crítica del código y entender que escribir funciones que "funcionan" no basta. Hay que escribir funciones comprensibles, seguras y escalables.
+- Durante este análisis estático, me di cuenta de que, aunque el proyecto CodeBending funcionaba correctamente a nivel funcional, había aspectos técnicos fundamentales que no había considerado lo suficiente desde una perspectiva de ingeniería profesional.
 
-- Decidí reemplazar Flake8 por Pylint porque me ofrecía diagnósticos más profundos, detectando aspectos que antes pasaban desapercibidos como nombres poco claros o estructuras de control demasiado densas.
+- Una de las herramientas más reveladoras fue Bandit. El hallazgo más crítico fue el uso de subprocess.run() en manejoMaven.py, líneas 1 y 7. Este código ejecuta el comando ['mvn', 'clean', 'test'] sin validación de entrada, lo cual puede parecer inofensivo porque el comando es fijo. Sin embargo, al analizarlo desde una perspectiva de producción, entendí que si alguien lograra modificar ese script (por ejemplo, mediante inyección de código o manipulación de entorno), se podría ejecutar cualquier comando arbitrario en el sistema. Este fue un punto de inflexión para mí, ya que comprendí que la seguridad no se trata solo de prevenir lo obvio, sino de proteger incluso lo que asumimos como seguro.
 
-- Respecto al análisis de Bandit, el hallazgo más importante fue el uso de subprocess.run() sin validación. A pesar de usar un comando fijo (mvn clean test), me di cuenta del riesgo si alguien llegase a manipular esta parte en un entorno productivo. Esto refuerza la importancia de no confiar nunca en ninguna entrada sin validación, incluso en pruebas.
+- En cuanto a Radon, me llamó la atención que funciones clave como detallesEjerciciosEstudiantes tenían una complejidad ciclomática muy alta (nota E). Al revisar esa función, noté que combinaba lógica de negocio, presentación y validaciones, lo que dificultaba su lectura y modificación. Antes no le habría dado importancia, pero ahora entiendo que una función así no solo es difícil de mantener, sino también riesgosa en términos de errores futuros. Esto me motivó a estudiar y aplicar los principios SOLID, particularmente el de Responsabilidad Única.
 
-- En lo personal, reafirmé que el análisis estático no debe ser una etapa opcional, sino parte integral del desarrollo profesional. Planeo implementar escaneos automáticos desde el inicio de los proyectos, para evitar errores costosos más adelante.
+- Respecto a Pylint, decidí reemplazar Flake8 ya que Pylint me ofrecía diagnósticos más amplios. Por ejemplo, me alertó sobre atributos mal definidos y nombres de variables poco claros, cosas que suelen pasar desapercibidas cuando uno desarrolla solo. Noté que varios archivos carecían de docstrings y contenían código muerto, lo cual afectaba directamente la mantenibilidad y legibilidad.
+
+- En resumen, esta experiencia me hizo entender que el análisis estático no es una formalidad, sino una herramienta poderosa para anticiparse a problemas que pueden costar caro en producción. De ahora en adelante, pienso incorporar análisis automático con Bandit y Pylint en mis flujos de trabajo desde el primer commit.
 
 📌 *Última revisión: 14 de Julio 2025*
 
