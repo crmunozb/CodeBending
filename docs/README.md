@@ -79,7 +79,13 @@ El objetivo fue evaluar la **calidad**, **seguridad** y **mantenibilidad** del c
 
 ### ✅ Conclusión Parcial (Seguridad)
 
-Este análisis me ayudó a entender que incluso decisiones menores, como habilitar debug o definir un host, pueden tener **grandes implicancias de seguridad**. Aunque el proyecto es académico, los errores encontrados son perfectamente extrapolables a proyectos reales. A partir de ahora, **planeo incluir Bandit en mis pipelines desde el inicio** del desarrollo, y evitar malas prácticas como guardar claves en el código.
+El análisis realizado me permitió identificar que incluso decisiones de configuración aparentemente menores —como habilitar el modo `debug`, exponer el host o almacenar claves directamente en el código— pueden representar riesgos significativos para la seguridad de una aplicación.
+
+Si bien este proyecto corresponde a un entorno académico, los hallazgos detectados son plenamente aplicables a contextos reales de desarrollo. Esta experiencia me llevó a valorar la importancia de adoptar una **postura preventiva en materia de seguridad desde las primeras etapas del desarrollo**.
+
+En función de lo anterior, a futuro incorporaré herramientas como **Bandit** de manera temprana en los pipelines de integración continua (CI/CD), aplicaré estándares más estrictos para la gestión de credenciales y reforzaré la validación de entradas externas. Estas acciones me permitirán mejorar la calidad y robustez del software que desarrollo.
+
+**A nivel personal**, este trabajo me hizo tomar conciencia de que escribir código funcional no es suficiente: también es mi responsabilidad que ese código sea seguro. Fue una llamada de atención sobre la profundidad que puede tener un análisis estático bien ejecutado y lo valioso que es incluirlo como parte integral del proceso de desarrollo.
 
 ---
 
