@@ -105,6 +105,8 @@ Lo más preocupante fue notar que muchas funciones mezclan la lógica de present
 
 Este análisis me ayudó a comprender por qué la complejidad no es solo un número, sino un reflejo de cuán mantenible y comprensible es el código.
 
+---
+
 ### 4. Resultados del Análisis de Calidad (Pylint)
 
 **📊 Puntuación general del código:** `6.43 / 10`
