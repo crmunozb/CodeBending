@@ -1,104 +1,119 @@
-# 📄 Informe de Análisis Estático del Proyecto CodeBending
+## 📄 Análisis Estático del Proyecto CodeBending
 
 ## 1. Introducción
+Este informe documenta el análisis estático realizado al proyecto CodeBending, una plataforma desarrollada en Python para la gestión y seguimiento de ejercicios de programación paso a paso. El objetivo fue evaluar la calidad, seguridad y mantenibilidad del código, utilizando tres herramientas especializadas:
 
-Este informe presenta los resultados del análisis estático realizado sobre el proyecto **CodeBending**, una plataforma educativa para gestionar ejercicios y series en lenguajes de programación.
+Bandit: Detección de vulnerabilidades de seguridad.
 
-Se utilizaron las siguientes herramientas:
+Radon: Evaluación de la complejidad ciclomática del código.
 
-- **Radon**: Análisis de complejidad ciclomática.
-- **Bandit**: Detección de vulnerabilidades de seguridad en Python.
-- **Pylint**: Evaluación del cumplimiento de buenas prácticas y calidad de código Python.
+Pylint: Análisis de calidad, estilo y convenciones de buenas prácticas Python.
 
----
+## 2. Resultados del Análisis con Bandit
+Resumen:
+Líneas analizadas: 1346
 
-## 2. Resultados del Análisis de Complejidad (Radon)
+Archivos analizados: 1
 
-Radon evalúa la complejidad ciclomática de funciones y clases, asignando calificaciones de **A** (muy buena) a **F** (muy compleja).
+Vulnerabilidades detectadas: 5
 
-### Principales hallazgos:
+Alta: 1
 
-- Se detectaron funciones con complejidad alta:
-  - `detallesEjerciciosEstudiantes` → **E (35)**
-  - `detallesCurso` → **D (26)**
-- Algunas funciones presentan complejidad moderada (**C**), como:
-  - `detallesEjercicio`, `dashDocente`, `progresoCurso`.
+Media: 3
 
-- También hay muchas funciones bien evaluadas:
-  - `manejoCarpetas.py` y `manejoArchivosJava.py`: mayoría con calificación **A**.
-  - Modelos ORM (`basedatos/modelos.py`): bien estructurados con complejidad baja (**A**).
+Baja: 1
 
-✅ **Recomendación:** Refactorizar funciones con notas **D**, **E** o superiores, dividiéndolas en subfunciones más pequeñas y reutilizables.
+Hallazgos clave:
+Uso de subprocess sin validación segura
 
----
+Archivo: manejoMaven.py, líneas 1 y 7
 
-## 3. Resultados del Análisis de Seguridad (Bandit)
+Riesgo: Alto
 
-Bandit detectó las siguientes vulnerabilidades:
+Justificación: Aunque el comando ['mvn', 'clean', 'test'] es fijo, debe protegerse de entradas externas.
 
-| Severidad | Problema                       | Archivo/Ubicación   | Descripción                                               |
-|-----------|--------------------------------|----------------------|-----------------------------------------------------------|
-| 🟥 Alta    | `debug=True` en Flask         | `main.py:1396`       | Expone la consola interactiva de Flask.                   |
-| 🟨 Media   | `host='0.0.0.0'`              | `main.py:1396`       | Puede exponer el servidor a conexiones externas.          |
-| 🟩 Baja    | Uso de `subprocess.run`       | `manejoMaven.py`     | Riesgo si se ejecuta entrada no confiable.                |
-| 🟩 Baja    | Contraseña codificada         | `main.py:59`         | Uso de clave secreta codificada como string.              |
+Recomendación: Validar entradas, mantener shell=False, y usar shlex.split().
 
-✅ **Recomendación:**
-- Eliminar `debug=True` en producción.
-- Usar variables de entorno para claves y configuraciones sensibles.
-- Validar todas las entradas antes de ejecutar comandos externos.
+Clave secreta hardcodeada
 
----
+Archivo: main.py, línea 59
 
-## 4. Resultados del Análisis de Calidad de Código (Pylint)
+Riesgo: Medio
 
-### Puntaje general:
-- **Pylint score promedio:** `6.43 / 10`
+Recomendación: Extraer a .env o usar os.getenv.
 
-### Problemas frecuentes detectados:
-- Falta de `docstrings` en módulos y funciones.
-- Importaciones no utilizadas (`unused-import`).
-- Atributos inexistentes o mal referenciados (`no-member`).
-- Variables definidas pero no utilizadas (`unused-variable`).
-- Estilo inconsistente en nombres o estructura de clases (`invalid-name`).
+debug=True en entorno Flask
 
-✅ **Recomendación:**
-- Documentar todas las funciones y módulos con `docstrings`.
-- Limpiar importaciones innecesarias.
-- Mejorar consistencia en los nombres de variables y atributos.
-- Validar atributos y relaciones antes de usarlos.
+Archivo: main.py, línea 1397
 
----
+Riesgo: Alto
 
-## 7. Retrospectiva Personal como Desarrollador
+Recomendación: Controlar por variable de entorno y eliminar en producción.
 
-- Realizar este análisis estático me permitió ver el proyecto CodeBending desde una perspectiva más profunda, más allá de su funcionalidad superficial. Como desarrollador, pude observar que, si bien el código cumple su propósito educativo, hay varios aspectos técnicos que requieren atención para escalar o robustecer esta plataforma.
+host='0.0.0.0' expuesto
 
-- Uno de los principales aprendizajes fue entender cómo la complejidad ciclomática puede afectar directamente la mantenibilidad. Al revisar funciones como detallesEjerciciosEstudiantes o detallesCurso, me di cuenta de que la dificultad para leerlas e interpretarlas se debe a una estructura monolítica. Esto me motivó a pensar en refactorizaciones utilizando principios como Single Responsibility y segmentación por bloques lógicos.
+Archivo: main.py, línea 1396
 
-- El análisis de Bandit fue especialmente revelador. Aunque el contexto del proyecto sea académico, encontrar código que ejecuta comandos con subprocess sin validación previa me hizo cuestionar cómo podrían explotar esto si se llevara a producción. En particular, el uso directo de subprocess.run(["mvn", "clean", "install"]) representa un riesgo si algún parámetro llega a ser manipulable por un usuario. Me hizo tomar conciencia de que, aunque el entorno sea controlado, nunca debe subestimarse la importancia de asegurar cada punto de entrada o ejecución externa.
+Riesgo: Medio
 
-- Reemplazar Flake8 por Pylint también fue una decisión reflexionada. Pylint me entregó análisis más detallados, tanto de estilo como de calidad de código. Esto me ayudó a identificar problemas más profundos que van desde la reutilización de variables hasta convenciones de nombres que podrían afectar la claridad del código.
+Recomendación: Restringir a localhost o usar firewall en producción.
 
-- En lo personal, esta experiencia reafirmó mi convicción de que el análisis estático no es una etapa extra, sino una necesidad profesional. Me gustaría implementar pipelines automáticos de revisión (CI/CD) en futuros proyectos, incluyendo herramientas como Bandit y Pylint desde el inicio. A largo plazo, creo que esto puede ahorrar tiempo, mejorar la colaboración y fortalecer la seguridad del software desde sus primeras líneas de código.
+## 3. Resultados del Análisis de Complejidad (Radon)
+Radon analiza la complejidad ciclomática de funciones, asignando notas de A (simple) a F (muy compleja).
 
-## 5. Conclusiones
+Principales funciones críticas:
+Función	Ubicación	Complejidad	Nota	Observaciones
+detallesEjerciciosEstudiantes	main.py:1199	35	E	Alta ramificación y múltiples responsabilidades.
+detallesCurso	main.py:701	26	D	Muchas condiciones anidadas.
+detallesEjercicio	main.py:561	18	C	Mezcla lógica de presentación y negocio.
+progresoCurso	main.py:1035	18	C	Condicionales repetitivos.
+dashDocente	main.py:297	15	C	Filtros condicionales en la vista.
+Otras funciones	varias	11–15	C	Condiciones múltiples y lógica acoplada.
 
-- El proyecto **CodeBending** presenta una **arquitectura funcional sólida**, con modelos bien definidos y lógica estructurada.
-- Se identificaron funciones con **alta complejidad ciclomática** que deben ser refactorizadas para mejorar mantenibilidad.
-- Bandit alertó sobre **riesgos importantes de seguridad** que deben mitigarse antes de un despliegue en producción.
-- Pylint evidenció **debilidades en documentación y estilo de código**, pero también una base sobre la cual mejorar.
+✅ Recomendación: Refactorizar funciones grandes y aplicar principios SOLID.
 
----
+## 4. Resultados del Análisis de Calidad (Pylint)
+Puntuación general: 6.43 / 10
 
-## 6. Recomendaciones Finales
+Observaciones frecuentes:
+❌ Falta de docstrings en funciones y módulos.
 
-- Refactorizar funciones complejas y aplicar principios SOLID.
-- Configurar un archivo `.env` para gestionar configuraciones sensibles.
-- Automatizar revisiones con herramientas como Bandit y Pylint integradas en un pipeline CI/CD.
-- Incorporar tests unitarios para asegurar estabilidad del sistema.
+🔄 Variables e imports no utilizados.
 
----
+📛 Nombres poco descriptivos en variables.
+
+🚫 Referencias a atributos inexistentes (warnings tipo no-member).
+
+✅ Recomendaciones:
+
+Añadir docstrings claros.
+
+Eliminar código muerto.
+
+Usar nombres autoexplicativos.
+
+Verificar integridad de atributos en clases.
+
+## 5. Conclusión Técnica
+El proyecto CodeBending presenta una base sólida, pero también áreas críticas a mejorar:
+
+🛡️ Seguridad: El uso de subprocess debe ser estrictamente controlado. No es trivial en entornos reales, donde un input mal validado puede comprometer el sistema.
+
+🔧 Mantenibilidad: La alta complejidad en funciones clave sugiere una urgente modularización.
+
+🧹 Calidad de código: Si bien aceptable, es necesario elevar el estándar adoptando reglas más estrictas.
+
+✅ Recomendación General: Automatizar estos chequeos en pipelines de CI/CD con Bandit y Pylint.
+
+## 6. Retrospectiva del Desarrollador
+
+- Como desarrollador, este análisis me permitió tener una visión más crítica del código y entender que escribir funciones que "funcionan" no basta. Hay que escribir funciones comprensibles, seguras y escalables.
+
+- Decidí reemplazar Flake8 por Pylint porque me ofrecía diagnósticos más profundos, detectando aspectos que antes pasaban desapercibidos como nombres poco claros o estructuras de control demasiado densas.
+
+- Respecto al análisis de Bandit, el hallazgo más importante fue el uso de subprocess.run() sin validación. A pesar de usar un comando fijo (mvn clean test), me di cuenta del riesgo si alguien llegase a manipular esta parte en un entorno productivo. Esto refuerza la importancia de no confiar nunca en ninguna entrada sin validación, incluso en pruebas.
+
+- En lo personal, reafirmé que el análisis estático no debe ser una etapa opcional, sino parte integral del desarrollo profesional. Planeo implementar escaneos automáticos desde el inicio de los proyectos, para evitar errores costosos más adelante.
 
 📌 *Última revisión: 14 de Julio 2025*
 
