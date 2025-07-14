@@ -105,27 +105,29 @@ Lo más preocupante fue notar que muchas funciones mezclan la lógica de present
 
 Este análisis me ayudó a comprender por qué la complejidad no es solo un número, sino un reflejo de cuán mantenible y comprensible es el código.
 
-## 4. Resultados del Análisis de Calidad (Pylint)
-Puntuación general: 6.43 / 10
+### 4. Resultados del Análisis de Calidad (Pylint)
 
-Observaciones frecuentes:
-❌ Falta de docstrings en funciones y módulos.
+**📊 Puntuación general del código:** `6.43 / 10`
 
-🔄 Variables e imports no utilizados.
+Este resultado refleja una calidad intermedia en términos de estilo, claridad y buenas prácticas, lo cual es consistente con el desarrollo de un proyecto universitario en etapa de prototipo.
 
-📛 Nombres poco descriptivos en variables.
+**🔍 Observaciones frecuentes detectadas:**
 
-🚫 Referencias a atributos inexistentes (warnings tipo no-member).
+- ❌ **Falta de docstrings** en funciones y módulos, especialmente en archivos como `main.py` y `manejadorUsuarios.py`. Esto dificulta la comprensión del propósito de cada componente para futuros mantenedores.
+- 🧩 **Variables e imports no utilizados**, lo que sugiere presencia de código muerto o parcialmente eliminado.
+- 🔻 **Nombres poco descriptivos**, como `data2` o `x`, que afectan la legibilidad.
+- 🚫 **Referencias a atributos inexistentes**, advertencias del tipo `no-member`, detectadas en métodos que acceden a propiedades no definidas en la clase.
 
-✅ Recomendaciones:
+**🧠 Análisis personal:**
 
-Añadir docstrings claros.
+Durante la revisión, noté que gran parte del código fue construido sin aplicar una guía de estilo unificada. Al tratarse de una plataforma que gestiona usuarios, ejercicios y retroalimentación paso a paso, la claridad del código es esencial para su mantenibilidad. El puntaje bajo en docstrings es particularmente crítico, ya que este proyecto podría ser extendido por otros desarrolladores y sin comentarios claros, la curva de aprendizaje se vuelve más empinada.
 
-Eliminar código muerto.
+**✅ Recomendaciones específicas:**
 
-Usar nombres autoexplicativos.
-
-Verificar integridad de atributos en clases.
+- Añadir **docstrings claros** en funciones y clases para facilitar la comprensión del código.
+- Eliminar **código muerto** o redundante.
+- Usar **nombres más descriptivos** y acordes al dominio del problema.
+- Validar y revisar los atributos de las clases para evitar **errores de acceso** (`no-member`) en tiempo de ejecución.
 
 ## 5. Conclusión Técnica
 El proyecto CodeBending presenta una base sólida, pero también áreas críticas a mejorar:
