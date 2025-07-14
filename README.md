@@ -23,14 +23,15 @@ Important: There seems to be a problem with path management under Windows, so I 
 
 Se aplicaron tres herramientas para evaluar la calidad y seguridad del código fuente:
 
-* 🔐 **Bandit**: detectó posibles vulnerabilidades en funciones de manipulación de archivos y uso de rutas.
-* 📏 **Flake8**: permitió identificar errores de estilo, como violaciones a PEP8, líneas demasiado largas y espacios innecesarios.
-* 🧠 **Radon**: analizó la complejidad ciclomática, permitiendo detectar funciones con lógica excesivamente compleja.
+* 🔐 **Bandit**: detectó posibles vulnerabilidades de seguridad, incluyendo mal uso de `subprocess`, ejecución insegura de código y configuraciones de debug expuestas.
+* 🧠 **Radon**: analizó la complejidad ciclomática del código, permitiendo detectar funciones con lógica excesivamente compleja (nivel D o E).
+* 🧹 **Pylint**: permitió revisar convenciones de estilo, documentación y prácticas recomendadas en Python, logrando una puntuación global aceptable tras las mejoras aplicadas.
+
 
 Los reportes generados se encuentran en la carpeta [`docs/`](./docs/):
 
 * [`bandit_resultados.txt`](./docs/bandit_resultados.txt)
-* [`flake8_resultados.txt`](./docs/flake8_resultados.txt)
+* [`pylint_resultados.txt`](./docs/pylint_resultados.txt)
 * [`radon_resultados.txt`](./docs/radon_resultados.txt)
 
 Para una explicación más detallada de los hallazgos, puede consultar el siguiente documento:
