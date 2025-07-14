@@ -41,7 +41,7 @@ El objetivo fue evaluar la **calidad**, **seguridad** y **mantenibilidad** del c
 
 ---
 
-#### 🟡 **2. Clave secreta hardcodeada**
+#### 🟡 **2. Clave secreta incrustada en el código fuente**
 - **Archivo**: `main.py`, línea 59  
 - **Riesgo**: Medio  
 - **Contexto**: Se detectó una clave de API o token directamente en el código. Aunque era una prueba, esto es una mala práctica incluso en entornos locales.  
@@ -49,7 +49,7 @@ El objetivo fue evaluar la **calidad**, **seguridad** y **mantenibilidad** del c
 
 ---
 
-#### 🟡 **3. `debug=True` en entorno Flask**
+#### 🟡 **3. Entorno de desarrollo con Flask**
 - **Archivo**: `main.py`, línea 1397  
 - **Riesgo**: Medio  
 - **Justificación**: El modo debug expone trazas completas de error, lo que podría mostrar información sensible en producción (como rutas internas o variables).  
