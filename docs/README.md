@@ -77,7 +77,7 @@ El objetivo fue evaluar la **calidad**, **seguridad** y **mantenibilidad** del c
 
 ---
 
-### ✅ Conclusión Parcial (Seguridad)
+### Conclusión Parcial (Seguridad)
 
 El análisis realizado me permitió identificar que incluso decisiones de configuración aparentemente menores —como habilitar el modo `debug`, exponer el host o almacenar claves directamente en el código— pueden representar riesgos significativos para la seguridad de una aplicación.
 
@@ -108,7 +108,7 @@ Radon evalúa la **complejidad ciclomática** de funciones, asignando notas de *
 
 ---
 
-### 🧩 Análisis Personal
+### Análisis Personal
 
 Al revisar las funciones con mayor complejidad, me llamó especialmente la atención `detallesEjerciciosEstudiantes`, con una complejidad de 35 (nota E). Al leerla, noté que mezcla múltiples responsabilidades: accede a la base de datos, filtra resultados, prepara estructuras para renderizar la vista, y maneja errores, todo en una misma función. Esto hace que entender su flujo lógico sea difícil y propenso a errores.
 
@@ -121,44 +121,51 @@ Lo más preocupante fue notar que muchas funciones mezclan la lógica de present
 - Aplicar el principio **SRP** (Single Responsibility Principle).
 - Mover la lógica de negocio fuera de las vistas hacia controladores/modulos aparte.
 
-Este análisis me ayudó a comprender por qué la complejidad no es solo un número, sino un reflejo de cuán mantenible y comprensible es el código.
+---
+
+## 🧹 4. Resultados del Análisis de Calidad (Pylint)
+
+📊 **Puntuación general del código:** `6.43 / 10`
+
+Este resultado refleja una calidad intermedia en cuanto a estilo, claridad y buenas prácticas, lo que es coherente con un proyecto académico en fase de prototipo.
+
+🔍 **Observaciones frecuentes detectadas:**
+
+- ❌ *Falta de docstrings* en funciones y módulos, especialmente en archivos como `main.py` y `manejadorUsuarios.py`, lo que dificulta la comprensión del propósito de cada componente.
+- 🟢 *Variables e imports no utilizados*, evidencia de código redundante o parcialmente eliminado.
+- 🔻 *Nombres poco descriptivos*, como `data2` o `x`, que afectan la legibilidad y claridad semántica del código.
+- ⛔ *Referencias a atributos inexistentes* (`no-member`), asociadas a errores de acceso a propiedades no definidas.
+
+🧠 **Análisis personal:**
+
+Durante la revisión, observé que gran parte del código se construyó sin seguir una guía de estilo unificada. Siendo esta una plataforma orientada al acompañamiento progresivo de usuarios, mantener un código claro, documentado y coherente es esencial. La ausencia de *docstrings* y la presencia de nombres genéricos dificultan la lectura y el traspaso del proyecto a otros desarrolladores, comprometiendo su mantenibilidad.
+
+🔧 **Recomendaciones específicas:**
+
+- Incorporar *docstrings* claros y precisos en todas las funciones y clases.
+- Eliminar *código muerto* o redundante para mejorar la limpieza del repositorio.
+- Utilizar *nombres descriptivos* y significativos, acordes al dominio de la aplicación.
+- Validar atributos de clase y corregir *errores de acceso* (`no-member`) en tiempo de ejecución.
+
+📌 **Reflexión final:**  
+Esta evaluación me permitió comprender que la calidad del código no se limita a su funcionamiento, sino que también se manifiesta en su estructura, legibilidad y capacidad de evolución. Me di cuenta de que seguir principios de estilo no es solo una formalidad, sino algo clave para que el código sea entendible y mantenible en el tiempo.
 
 ---
 
-### 4. Resultados del Análisis de Calidad (Pylint)
+## 🧾 Conclusión Final
 
-**📊 Puntuación general del código:** `6.43 / 10`
+El análisis realizado a lo largo del proyecto *CodeBending* reveló tanto fortalezas como oportunidades claras de mejora en aspectos críticos del desarrollo de software:
 
-Este resultado refleja una calidad intermedia en términos de estilo, claridad y buenas prácticas, lo cual es consistente con el desarrollo de un proyecto universitario en etapa de prototipo.
+- 🛡️ **Seguridad**: Se identificaron malas prácticas potencialmente riesgosas, como el uso de `subprocess` sin validación adecuada. En entornos reales, estas decisiones pueden derivar en vulnerabilidades graves. Este hallazgo refuerza la necesidad de adoptar una postura de seguridad desde el inicio del desarrollo.
 
-**🔍 Observaciones frecuentes detectadas:**
+- 🔧 **Mantenibilidad**: La complejidad ciclomática elevada en funciones clave refleja un diseño con responsabilidades poco claras. Esto dificulta la lectura, el testeo y la evolución del sistema, haciendo urgente una refactorización basada en principios como *SRP* y separación de capas.
 
-- ❌ **Falta de docstrings** en funciones y módulos, especialmente en archivos como `main.py` y `manejadorUsuarios.py`. Esto dificulta la comprensión del propósito de cada componente para futuros mantenedores.
-- 🧩 **Variables e imports no utilizados**, lo que sugiere presencia de código muerto o parcialmente eliminado.
-- 🔻 **Nombres poco descriptivos**, como `data2` o `x`, que afectan la legibilidad.
-- 🚫 **Referencias a atributos inexistentes**, advertencias del tipo `no-member`, detectadas en métodos que acceden a propiedades no definidas en la clase.
+- 🧹 **Calidad de código**: Aunque la puntuación obtenida es aceptable para un prototipo académico, se detectaron múltiples aspectos que afectan la legibilidad y consistencia, como nombres poco descriptivos y ausencia de *docstrings*. Elevar el estándar es clave si se busca escalar o mantener el proyecto en el tiempo.
 
-**🧠 Análisis personal:**
+✅ **Recomendación general**: Automatizar los análisis de seguridad y calidad como parte integral del ciclo de desarrollo, incorporando herramientas como **Bandit** y **Pylint** en pipelines de CI/CD. Esto no solo permitirá detectar problemas tempranamente, sino que fomentará una cultura de desarrollo más profesional y sostenible.
 
-Durante la revisión, noté que gran parte del código fue construido sin aplicar una guía de estilo unificada. Al tratarse de una plataforma que gestiona usuarios, ejercicios y retroalimentación paso a paso, la claridad del código es esencial para su mantenibilidad. El puntaje bajo en docstrings es particularmente crítico, ya que este proyecto podría ser extendido por otros desarrolladores y sin comentarios claros, la curva de aprendizaje se vuelve más empinada.
+---
 
-**✅ Recomendaciones específicas:**
-
-- Añadir **docstrings claros** en funciones y clases para facilitar la comprensión del código.
-- Eliminar **código muerto** o redundante.
-- Usar **nombres más descriptivos** y acordes al dominio del problema.
-- Validar y revisar los atributos de las clases para evitar **errores de acceso** (`no-member`) en tiempo de ejecución.
-
-## 5. Conclusión Técnica
-El proyecto CodeBending presenta una base sólida, pero también áreas críticas a mejorar:
-
-🛡️ Seguridad: El uso de subprocess debe ser estrictamente controlado. No es trivial en entornos reales, donde un input mal validado puede comprometer el sistema.
-
-🔧 Mantenibilidad: La alta complejidad en funciones clave sugiere una urgente modularización.
-
-🧹 Calidad de código: Si bien aceptable, es necesario elevar el estándar adoptando reglas más estrictas.
-
-✅ Recomendación General: Automatizar estos chequeos en pipelines de CI/CD con Bandit y Pylint.
 
 ## 6. Retrospectiva del Desarrollador
 
