@@ -15,45 +15,59 @@ El objetivo fue evaluar la **calidad**, **seguridad** y **mantenibilidad** del c
 
 ### 📌 Resumen General:
 
-| Métrica                  | Valor |
-|--------------------------|-------|
-| **Líneas analizadas**    | 1346  |
-| **Archivos analizados**  | 1     |
-| **Vulnerabilidades**     | 5     |
-| 🔴 **Alta**              | 1     |
-| 🟡 **Media**             | 3     |
-| 🟢 **Baja**              | 1     |
+| **Métrica**              | **Valor** |
+|--------------------------|-----------|
+| Líneas analizadas        | 1346      |
+| Archivos analizados      | 1         |
+| Vulnerabilidades         | 5         |
+| 🔴 Alta                  | 1         |
+| 🟡 Media                 | 3         |
+| 🟢 Baja                  | 1         |
 
 ---
 
 ### 🔍 Hallazgos Clave:
 
-#### 🔴 Uso de `subprocess` sin validación segura  
+#### 🔴 **1. Uso de `subprocess.run()` sin validación segura**
 - **Archivo**: `manejoMaven.py`, líneas 1 y 7  
+- **Comando ejecutado**:
+  ```python
+  subprocess.run(['mvn', 'clean', 'test'])
+  ```
 - **Riesgo**: Alto  
-- **Justificación**: Aunque se usa un comando fijo (`['mvn', 'clean', 'test']`), debe protegerse de entradas externas.  
-- **Recomendación**: Validar entradas, mantener `shell=False` y usar `shlex.split()`.
+- **Justificación**: Aunque el comando parece fijo, en proyectos Python es común reutilizar scripts. Si este archivo se adapta para aceptar parámetros externos (por ejemplo, nombre del paquete a testear), una entrada mal validada podría permitir la ejecución arbitraria de comandos.  
+- **Recomendación**: Validar cualquier entrada futura, mantener `shell=False`, y usar `shlex.split()` si se transforma a string.  
+- **Reflexión como desarrollador**: Me di cuenta de que incluso cuando el comando es controlado, el simple hecho de usar `subprocess` exige una mentalidad de seguridad preventiva. Es un recordatorio de que **la seguridad debe aplicarse también a los scripts auxiliares**, no solo a las interfaces principales.
 
 ---
 
-#### 🟡 Clave secreta hardcodeada  
+#### 🟡 **2. Clave secreta hardcodeada**
 - **Archivo**: `main.py`, línea 59  
 - **Riesgo**: Medio  
-- **Recomendación**: Extraer la clave a un archivo `.env` y acceder mediante `os.getenv`.
+- **Contexto**: Se detectó una clave de API o token directamente en el código. Aunque era una prueba, esto es una mala práctica incluso en entornos locales.  
+- **Recomendación**: Mover la clave a un archivo `.env` e importar con `os.getenv()`. En producción, esto permite rotar credenciales sin alterar el código fuente.
 
 ---
 
-#### 🔴 `debug=True` en entorno Flask  
+#### 🔴 **3. `debug=True` en entorno Flask**
 - **Archivo**: `main.py`, línea 1397  
 - **Riesgo**: Alto  
-- **Recomendación**: Controlar mediante una variable de entorno. Eliminar en producción.
+- **Justificación**: El modo debug expone trazas completas de error, lo que podría mostrar información sensible en producción (como rutas internas o variables).  
+- **Recomendación**: Desactivar el debug en producción, controlarlo con una variable de entorno (`DEBUG=False`).
 
 ---
 
-#### 🟡 `host='0.0.0.0'` expuesto  
+#### 🟡 **4. host='0.0.0.0' expuesto**
 - **Archivo**: `main.py`, línea 1396  
 - **Riesgo**: Medio  
-- **Recomendación**: Restringir a `localhost` o proteger con firewall.
+- **Justificación**: Esta configuración hace que el servidor esté accesible desde cualquier IP. Útil en desarrollo remoto, pero riesgoso en entornos abiertos.  
+- **Recomendación**: Restringir a `localhost` o proteger con reglas de firewall si se expone públicamente.
+
+---
+
+### ✅ Conclusión Parcial (Seguridad)
+
+Este análisis me ayudó a entender que incluso decisiones menores, como habilitar debug o definir un host, pueden tener **grandes implicancias de seguridad**. Aunque el proyecto es académico, los errores encontrados son perfectamente extrapolables a proyectos reales. A partir de ahora, **planeo incluir Bandit en mis pipelines desde el inicio** del desarrollo, y evitar malas prácticas como guardar claves en el código.
 
 ---
 
